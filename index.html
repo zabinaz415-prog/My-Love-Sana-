@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Love.exe | A Special Question To My Favourite Person Miss Sana ❤️</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Great Vibes for romantic cursive styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            cursive: ['"Great Vibes"', 'cursive'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            lovePink: '#ff4d79',
+            loveViolet: '#2b0938',
+            deepDark: '#0d0414',
+            accentPink: '#ff2d60',
+            glowRed: '#ff1744'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #0b0210;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Ambient Romantic Background Glow */
+    .ambient-glow {
+      background: radial-gradient(circle at 50% 40%, rgba(138, 28, 93, 0.45) 0%, rgba(45, 9, 58, 0.6) 45%, rgba(11, 2, 16, 0.95) 100%);
+    }
+
+    /* Glassmorphism Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 25px rgba(255, 77, 121, 0.2);
+    }
+
+    /* Envelope Styling */
+    .envelope-wrapper {
+      position: relative;
+      width: 290px;
+      height: 190px;
+      margin: auto;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #ff5e89;
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(255, 94, 137, 0.4);
+    }
+    .envelope::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 145px solid #ff7299;
+      border-right: 145px solid #ff7299;
+      border-top: 100px solid transparent;
+      border-bottom: 90px solid #ff4d79;
+      border-radius: 0 0 16px 16px;
+      z-index: 3;
+    }
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 145px solid transparent;
+      border-right: 145px solid transparent;
+      border-top: 110px solid #ff3b6c;
+      transform-origin: top center;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.3s;
+      z-index: 5;
+    }
+    .envelope-seal {
+      position: absolute;
+      top: 90px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease;
+    }
+    .envelope.open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+    .envelope.open .envelope-seal {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .letter-paper {
+      position: absolute;
+      bottom: 6px;
+      left: 12px;
+      right: 12px;
+      height: 165px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 2;
+    }
+    .envelope.open .letter-paper {
+      transform: translateY(-90px);
+      z-index: 4;
+    }
+
+    /* Vinyl Record Spinning */
+    .vinyl-disc {
+      animation: spinRecord 6s linear infinite;
+    }
+    @keyframes spinRecord {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Equalizer wave bars */
+    .eq-bar {
+      animation: bounceEQ 1.2s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(2) { animation-delay: 0.2s; }
+    .eq-bar:nth-child(3) { animation-delay: 0.4s; }
+    .eq-bar:nth-child(4) { animation-delay: 0.15s; }
+    .eq-bar:nth-child(5) { animation-delay: 0.35s; }
+    @keyframes bounceEQ {
+      0% { height: 6px; }
+      100% { height: 28px; }
+    }
+
+    /* Pulse Glow Keyframes */
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 77, 121, 0.6); }
+      50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(255, 77, 121, 0.9); }
+    }
+    .pulse-btn {
+      animation: pulseGlow 2.2s infinite;
+    }
+
+    /* Ring floating animation */
+    @keyframes ringFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+    .float-ring {
+      animation: ringFloat 3.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="relative flex items-center justify-center min-h-screen ambient-glow select-none overflow-hidden">
+
+  <!-- Matrix / Cyber rain canvas -->
+  <canvas id="matrixCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+  <!-- Floating Hearts Background Canvas -->
+  <canvas id="heartsCanvas" class="absolute inset-0 pointer-events-none z-1 opacity-80"></canvas>
+
+  <!-- Main Viewport Shell -->
+  <main class="relative z-10 w-full max-w-md mx-auto h-[100dvh] flex flex-col items-center justify-center p-6 text-center">
+
+    <!-- ================= STAGE 1: MATRIX / TERMINAL COUNTDOWN ================= -->
+    <section id="stage-countdown" class="w-full flex flex-col items-center justify-center transition-all duration-700">
+      <div class="font-mono text-xs text-pink-400/80 mb-6 tracking-widest uppercase">
+        &gt; Initializing protocol...
+      </div>
+      
+      <!-- Big glowing countdown number -->
+      <div id="countdownNumber" class="text-8xl md:text-9xl font-bold font-mono tracking-tighter text-white drop-shadow-[0_0_35px_rgba(255,77,121,0.9)] transition-transform duration-500 scale-100">
+        3
+      </div>
+
+      <div class="mt-8 font-mono text-xs text-white/50 tracking-wider">
+        Sab bolte the, 'Software Developer ho Toh ..<br>purpose bhi kuch alag hi karogii.' ❤️️💻
+      </div>
+    </section>
+
+    <!-- ================= STAGE 2: LOADING STAGE (Love.exe) ================= -->
+    <section id="stage-loading" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="w-full max-w-xs flex flex-col items-center">
+        <!-- Dynamic terminal status text -->
+        <h2 id="loadingStatusText" class="text-lg md:text-xl font-medium tracking-wide text-white min-h-[58px] flex items-center justify-center text-center transition-opacity duration-300">
+          Initializing Love.exe...|
+        </h2>
+
+        <!-- Progress bar shell -->
+        <div class="w-full h-2 bg-white/10 rounded-full mt-4 overflow-hidden p-0.5 border border-white/20">
+          <div id="progressBarFill" class="h-full bg-gradient-to-r from-pink-500 via-rose-400 to-pink-300 rounded-full transition-all duration-100 ease-out" style="width: 3%;"></div>
+        </div>
+
+        <span id="progressPercentage" class="text-xs font-mono text-pink-300/80 mt-2">3%</span>
+
+        <!-- Pulsating Pill Button (Appears when 100% complete) -->
+        <button id="foundResultBtn" onclick="nextStage('stage-envelope')" class="hidden mt-8 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white font-medium text-sm shadow-lg pulse-btn transition-all duration-300 hover:scale-105 active:scale-95">
+          Found 1 Result ❤️
+        </button>
+      </div>
+
+      <p class="absolute bottom-8 text-xs text-white/40 font-mono tracking-wider">
+        Challenge Accepted. 💻❤️
+      </p>
+    </section>
+
+    <!-- ================= STAGE 3: THE ENVELOPE ================= -->
+    <section id="stage-envelope" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="tracking-[0.25em] text-xs font-semibold text-pink-300/80 uppercase mb-8">
+        A Letter Arrived 💕
+      </div>
+
+      <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+        <div class="envelope" id="envelope">
+          <div class="envelope-flap"></div>
+          <div class="envelope-seal">
+            <span class="text-xl">💌</span>
+          </div>
+          <div class="letter-paper flex items-center justify-center p-4">
+            <span class="font-cursive text-2xl text-pink-600">for you</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-8 text-xs text-pink-200/70 tracking-widest uppercase transition-opacity animate-pulse">
+        tap the envelope to open it
+      </p>
+    </section>
+
+    <!-- ================= STAGE 4: LOVE LETTER SLIDER ================= -->
+    <section id="stage-letter" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="w-full max-w-sm glass-card rounded-3xl p-7 text-center relative overflow-hidden flex flex-col items-center min-h-[380px] justify-between">
+        
+        <div>
+          <!-- Title -->
+          <h2 class="font-cursive text-4xl text-rose-300 mb-6 drop-shadow-[0_2px_10px_rgba(255,105,180,0.5)]">
+            for you
+          </h2>
+
+          <!-- Slide Content Container -->
+          <div id="letterContent" class="text-base text-pink-50 leading-relaxed font-light min-h-[140px] flex items-center justify-center px-2 transition-all duration-400">
+            <!-- Dynamic slides inserted via JS -->
+          </div>
+        </div>
+
+        <!-- Slider Dots & Button -->
+        <div class="w-full flex flex-col items-center gap-4 mt-4">
+          <div class="flex items-center gap-1.5" id="slideDots">
+            <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+            <span class="w-2 h-2 rounded-full bg-white/20"></span>
+            <span class="w-2 h-2 rounded-full bg-white/20"></span>
+            <span class="w-2 h-2 rounded-full bg-white/20"></span>
+          </div>
+
+          <button id="letterNextBtn" onclick="nextLetterSlide()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-white font-medium text-sm shadow-md hover:brightness-110 active:scale-95 transition-all">
+            Next
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= STAGE 5: ROMANTIC MINI Q&A ================= -->
+    <section id="stage-qa" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="w-full max-w-sm glass-card rounded-3xl p-8 text-center flex flex-col items-center justify-between min-h-[310px]">
+        
+        <!-- QA Header & Icon -->
+        <div class="flex flex-col items-center">
+          <div id="qaIcon" class="text-4xl mb-3 animate-bounce">☕</div>
+          <h3 id="qaQuestion" class="text-2xl font-semibold text-white tracking-wide">
+            Coffee Date?
+          </h3>
+        </div>
+
+        <!-- QA Action buttons -->
+        <div class="w-full flex items-center justify-center gap-4 mt-6">
+          <button id="qaBtn1" onclick="answerQA()" class="flex-1 py-3 px-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold tracking-wider text-pink-100 transition-all active:scale-95">
+            YES
+          </button>
+          <button id="qaBtn2" onclick="answerQA()" class="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-xs font-semibold tracking-wider text-white shadow-lg hover:brightness-110 transition-all active:scale-95">
+            OF COURSE
+          </button>
+        </div>
+
+        <!-- QA step indicator -->
+        <div class="flex gap-1.5 mt-5">
+          <span id="qaDot1" class="w-5 h-1.5 rounded-full bg-pink-400"></span>
+          <span id="qaDot2" class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+          <span id="qaDot3" class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= STAGE 6: MUSIC PLAYER SCREEN ================= -->
+    <section id="stage-music" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="w-full max-w-sm flex flex-col items-center text-center">
+        
+        <!-- Vinyl Record Graphic -->
+        <div class="relative w-44 h-44 mb-6 flex items-center justify-center">
+          <!-- Outer Vinyl Ring -->
+          <div class="vinyl-disc w-full h-full rounded-full bg-gradient-to-tr from-zinc-950 via-zinc-900 to-zinc-800 p-3 shadow-[0_0_35px_rgba(255,77,121,0.5)] border-4 border-pink-500/30 flex items-center justify-center">
+            <!-- Grooves -->
+            <div class="w-full h-full rounded-full border border-white/10 flex items-center justify-center">
+              <div class="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-rose-700 flex items-center justify-center shadow-inner">
+                <div class="w-6 h-6 rounded-full bg-[#0b0210] border-2 border-white/40"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
+          Us ❤️
+        </h3>
+        <p class="text-xs text-pink-300/70 font-light mt-1">Our Story</p>
+
+        <!-- Audio wave equalizer -->
+        <div class="flex items-center justify-center gap-1.5 my-4 h-8">
+          <span class="eq-bar w-1 bg-pink-400 rounded-full"></span>
+          <span class="eq-bar w-1 bg-rose-400 rounded-full"></span>
+          <span class="eq-bar w-1 bg-pink-300 rounded-full"></span>
+          <span class="eq-bar w-1 bg-rose-500 rounded-full"></span>
+          <span class="eq-bar w-1 bg-pink-400 rounded-full"></span>
+        </div>
+
+        <!-- Progress track line -->
+        <div class="w-64 h-1 bg-white/15 rounded-full overflow-hidden my-2">
+          <div class="h-full bg-pink-500 rounded-full animate-pulse" style="width: 65%;"></div>
+        </div>
+
+        <!-- Sentimental message -->
+        <p class="text-sm font-light text-pink-100/90 max-w-xs mt-4 leading-relaxed">
+          "Ab Aap sirf meri favourite person nahi ho...<br>Aap meri favourite feeling ho. 💕"
+        </p>
+
+        <!-- Prompt to ask the big question -->
+        <div class="mt-8 w-full max-w-xs">
+          <p class="text-xs text-pink-300/80 font-mono mb-2">So...</p>
+          <button onclick="nextStage('stage-proposal')" class="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white font-semibold text-sm shadow-[0_4px_25px_rgba(255,77,121,0.5)] active:scale-95 transition-all">
+            Haan Pucho ❤️
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= STAGE 7: THE BIG PROPOSAL SCREEN ================= -->
+    <section id="stage-proposal" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="w-full max-w-sm glass-card rounded-3xl p-8 text-center flex flex-col items-center relative min-h-[380px] justify-between">
+        
+        <div class="flex flex-col items-center pt-2">
+          <span class="text-4xl mb-4 animate-bounce">💖</span>
+          <h2 class="text-3xl font-extrabold text-white tracking-tight leading-snug drop-shadow-[0_2px_15px_rgba(255,77,121,0.8)]">
+            Sana Kya Aap Meri Girlfriendb yaa Jaan Banogi?
+          </h2>
+        </div>
+
+        <!-- Proposal Actions -->
+        <div class="w-full flex flex-col items-center gap-4 mt-6 relative h-36 justify-center">
+          
+          <!-- Big YES Button -->
+          <button id="yesProposalBtn" onclick="acceptProposal()" class="w-full py-4 px-8 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white font-bold text-base shadow-[0_0_30px_rgba(255,77,121,0.9)] pulse-btn active:scale-95 transition-transform duration-300">
+            💖 YES
+          </button>
+
+          <!-- Runaway / Dodging No Button -->
+          <button id="noProposalBtn" class="py-3 px-6 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-xs font-semibold text-pink-200/90 transition-all duration-200 active:scale-95 shadow-md">
+            🙈 SHAYAD NAHI
+          </button>
+
+        </div>
+
+        <p class="text-[11px] text-white/40 tracking-wider">
+          (There is only one right answer 😉)
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ================= STAGE 8: CELEBRATION (Yayyy) ================= -->
+    <section id="stage-celebration" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="w-full max-w-sm text-center flex flex-col items-center">
+        
+        <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-200 to-pink-400 drop-shadow-[0_0_25px_rgba(255,77,121,0.8)]">
+          Yayyyyyyyyyy 💕
+        </h1>
+
+        <!-- Floating Engagement Ring Graphic -->
+        <div class="my-6 float-ring">
+          <svg class="w-24 h-24 text-amber-200 drop-shadow-[0_0_20px_rgba(255,215,0,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="14" r="7" stroke="url(#ringGrad)" stroke-width="2.5" />
+            <path d="M12 3L15 6L12 9L9 6Z" fill="#ff4d79" stroke="#ffffff" stroke-width="1.2" />
+            <defs>
+              <linearGradient id="ringGrad" x1="5" y1="7" x2="19" y2="21" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#FFE259"/>
+                <stop offset="1" stop-color="#FFA751"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 mb-6 text-pink-100 text-sm leading-relaxed space-y-3">
+          <p class="font-medium text-pink-200">Officially...</p>
+          <p>Sana Ab Aap meri favourite notification ho.</p>
+          <div class="w-12 h-0.5 bg-pink-400/40 mx-auto my-2"></div>
+          <p class="font-medium text-pink-200">I Promise...</p>
+          <p>Har smile ki wajah banne ki puri koshish karungi. ❤️</p>
+        </div>
+
+        <button onclick="nextStage('stage-counter')" class="w-full py-4 rounded-full bg-gradient-to-r from-pink-500 to-rose-600 text-white font-semibold text-sm shadow-[0_4px_25px_rgba(255,77,121,0.6)] pulse-btn active:scale-95 transition-all">
+          Welcome to Our Story ✨
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ================= STAGE 9: FINAL TICKING LIVE COUNTER ================= -->
+    <section id="stage-counter" class="w-full hidden flex-col items-center justify-center transition-all duration-700">
+      <div class="w-full max-w-sm glass-card rounded-3xl p-7 text-center flex flex-col items-center">
+        
+        <h2 class="text-2xl font-bold text-white mb-1 drop-shadow-[0_2px_10px_rgba(255,77,121,0.7)]">
+          Welcome to Our Story 💕
+        </h2>
+        <span class="text-[11px] font-mono tracking-widest text-pink-300 uppercase mb-6">Together Since</span>
+
+        <!-- Live Clock Cards Grid -->
+        <div class="grid grid-cols-3 gap-3 w-full mb-3">
+          <!-- Days -->
+          <div class="bg-white/10 rounded-2xl p-3 border border-white/15 flex flex-col items-center">
+            <span id="counterDays" class="text-3xl font-extrabold text-white">0</span>
+            <span class="text-[10px] text-pink-200/80 font-mono uppercase mt-1">Days</span>
+          </div>
+          <!-- Hours -->
+          <div class="bg-white/10 rounded-2xl p-3 border border-white/15 flex flex-col items-center">
+            <span id="counterHours" class="text-3xl font-extrabold text-white">0</span>
+            <span class="text-[10px] text-pink-200/80 font-mono uppercase mt-1">Hours</span>
+          </div>
+          <!-- Minutes -->
+          <div class="bg-white/10 rounded-2xl p-3 border border-white/15 flex flex-col items-center">
+            <span id="counterMinutes" class="text-3xl font-extrabold text-white">0</span>
+            <span class="text-[10px] text-pink-200/80 font-mono uppercase mt-1">Minutes</span>
+          </div>
+        </div>
+
+        <!-- Seconds Card -->
+        <div class="bg-white/10 rounded-2xl py-3 px-8 border border-white/15 flex flex-col items-center mb-6">
+          <span id="counterSeconds" class="text-3xl font-extrabold text-rose-400">0</span>
+          <span class="text-[10px] text-pink-200/80 font-mono uppercase mt-1">Seconds</span>
+        </div>
+
+        <!-- Final Romantic Footer Quote -->
+        <p class="font-cursive text-2xl text-pink-200 mb-2 leading-relaxed">
+          Aapko Hurt krne ke lie bhi Dil se Sorry Aage se koi galti na ho puri koshish Krungi 
+        </p>
+        <span class="text-3xl animate-pulse">❤️</span>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // --- 1. MATRIX RAIN EFFECT (Cyber / Pink Terminal Aesthetic) ---
+    const matrixCanvas = document.getElementById('matrixCanvas');
+    const mCtx = matrixCanvas.getContext('2d');
+    let matrixCols = 0;
+    let matrixY = [];
+    const characters = '01LOVE01FOREVER<>{}/*01100101💖❤️✨10010';
+
+    function initMatrix() {
+      matrixCanvas.width = window.innerWidth;
+      matrixCanvas.height = window.innerHeight;
+      matrixCols = Math.floor(matrixCanvas.width / 22);
+      matrixY = Array(matrixCols).fill(0).map(() => Math.floor(Math.random() * -50));
+    }
+
+    function drawMatrix() {
+      // Draw semi-transparent fade
+      mCtx.fillStyle = 'rgba(11, 2, 16, 0.15)';
+      mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+      mCtx.fillStyle = '#ff4d79';
+      mCtx.font = '12px JetBrains Mono, monospace';
+
+      for (let i = 0; i < matrixCols; i++) {
+        const text = characters[Math.floor(Math.random() * characters.length)];
+        const x = i * 22;
+        const y = matrixY[i] * 22;
+
+        // Subtle gradient pink/crimson brightness
+        mCtx.fillStyle = Math.random() > 0.85 ? '#ffffff' : (Math.random() > 0.5 ? '#ff2d60' : '#b31545');
+        mCtx.fillText(text, x, y);
+
+        if (y > matrixCanvas.height && Math.random() > 0.98) {
+          matrixY[i] = 0;
+        }
+        matrixY[i]++;
+      }
+    }
+
+    // --- 2. FLOATING HEARTS EFFECT (Soft romantic atmosphere) ---
+    const heartsCanvas = document.getElementById('heartsCanvas');
+    const hCtx = heartsCanvas.getContext('2d');
+    const heartsArray = [];
+
+    function initHearts() {
+      heartsCanvas.width = window.innerWidth;
+      heartsCanvas.height = window.innerHeight;
+      heartsArray.length = 0;
+      for (let i = 0; i < 28; i++) {
+        heartsArray.push({
+          x: Math.random() * heartsCanvas.width,
+          y: Math.random() * heartsCanvas.height,
+          size: Math.random() * 12 + 8,
+          speedY: Math.random() * 0.7 + 0.4,
+          speedX: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.6 + 0.2,
+          color: Math.random() > 0.4 ? 'rgba(255, 77, 121,' : 'rgba(255, 140, 170,'
+        });
+      }
+    }
+
+    function drawHeartShape(ctx, x, y, size) {
+      ctx.beginPath();
+      const topCurveHeight = size * 0.3;
+      ctx.moveTo(x, y + topCurveHeight);
+      // top left curve
+      ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+      // bottom left curve
+      ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + (size + topCurveHeight) / 2, x, y + size);
+      // bottom right curve
+      ctx.bezierCurveTo(x, y + (size + topCurveHeight) / 2, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+      // top right curve
+      ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function animateHearts() {
+      hCtx.clearRect(0, 0, heartsCanvas.width, heartsCanvas.height);
+      for (let i = 0; i < heartsArray.length; i++) {
+        const h = heartsArray[i];
+        hCtx.fillStyle = `${h.color}${h.opacity})`;
+        drawHeartShape(hCtx, h.x, h.y, h.size);
+
+        h.y -= h.speedY;
+        h.x += h.speedX;
+
+        if (h.y + h.size < 0) {
+          h.y = heartsCanvas.height + 15;
+          h.x = Math.random() * heartsCanvas.width;
+        }
+      }
+    }
+
+    // Helper to transition smoothly between screens
+    function nextStage(stageId) {
+      const stages = document.querySelectorAll('section');
+      stages.forEach(s => {
+        s.classList.add('hidden');
+        s.classList.remove('flex');
+      });
+      const activeStage = document.getElementById(stageId);
+      if (activeStage) {
+        activeStage.classList.remove('hidden');
+        activeStage.classList.add('flex');
+      }
+
+      if (stageId === 'stage-letter') {
+        renderLetterSlide();
+      }
+      if (stageId === 'stage-celebration') {
+        triggerConfettiRain();
+      }
+      if (stageId === 'stage-counter') {
+        startTickingCounter();
+      }
+    }
+
+    // --- STAGE 1: COUNTDOWN LOGIC (3 -> 2 -> 1) ---
+    let countdownVal = 3;
+    const countdownEl = document.getElementById('countdownNumber');
+
+    function startCountdown() {
+      const timer = setInterval(() => {
+        countdownVal--;
+        if (countdownVal > 0) {
+          countdownEl.style.transform = 'scale(0.7)';
+          setTimeout(() => {
+            countdownEl.textContent = countdownVal;
+            countdownEl.style.transform = 'scale(1)';
+          }, 200);
+        } else {
+          clearInterval(timer);
+          nextStage('stage-loading');
+          startLoadingProcess();
+        }
+      }, 1000);
+    }
+
+    // --- STAGE 2: LOADING PROGRESS BAR & TEXT SEQUENCE ---
+    const loadingStatusText = document.getElementById('loadingStatusText');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const progressPercentage = document.getElementById('progressPercentage');
+    const foundResultBtn = document.getElementById('foundResultBtn');
+
+    function startLoadingProcess() {
+      let percent = 3;
+      const interval = setInterval(() => {
+        percent += 1;
+        progressBarFill.style.width = percent + '%';
+        progressPercentage.textContent = percent + '%';
+
+        if (percent === 35) {
+          loadingStatusText.textContent = "Searching for the prettiest smile...";
+        } else if (percent === 80) {
+          loadingStatusText.textContent = "Scanning the universe for you...";
+        } else if (percent === 98) {
+          loadingStatusText.textContent = "Found 1 Result ❤️️";
+        }
+
+        if (percent >= 100) {
+          clearInterval(interval);
+          progressBarFill.style.width = '100%';
+          progressPercentage.textContent = '100%';
+          foundResultBtn.classList.remove('hidden');
+        }
+      }, 55);
+    }
+
+    // --- STAGE 3: INTERACTIVE ENVELOPE OPENING ---
+    let envelopeOpened = false;
+    function openEnvelope() {
+      if (envelopeOpened) return;
+      envelopeOpened = true;
+      const envelope = document.getElementById('envelope');
+      envelope.classList.add('open');
+      
+      // Delay transitioning to letter to let flip animation play
+      setTimeout(() => {
+        nextStage('stage-letter');
+      }, 1100);
+    }
+
+    // --- STAGE 4: MULTI-STEP LETTER SLIDER ---
+    const letterSlides = [
+      "Hey Jaan... Pata hai... Main ye sab normally bol nahi pata... Lekin aaj dil ne kaha... Risk le le... Kyuki kuch log baar baar nahi milte.",
+      "Jab bhi tum online aati ho... Mera mood automatically better ho jata hai.",
+      "Tumhare messages... Mere din ka favourite notification hote hain.",
+      "Honestly... Tum meri life ki sabse pyari coincidence ho."
+    ];
+    let currentSlide = 0;
+
+    function renderLetterSlide() {
+      const container = document.getElementById('letterContent');
+      const dots = document.getElementById('slideDots').children;
+      const nextBtn = document.getElementById('letterNextBtn');
+
+      container.style.opacity = 0;
+      setTimeout(() => {
+        container.innerHTML = `<p class="fade-in">${letterSlides[currentSlide]}</p>`;
+        container.style.opacity = 1;
+
+        // Update dots
+        for (let i = 0; i < dots.length; i++) {
+          if (i === currentSlide) {
+            dots[i].className = 'w-4 h-2 rounded-full bg-pink-400 transition-all';
+          } else {
+            dots[i].className = 'w-2 h-2 rounded-full bg-white/20 transition-all';
+          }
+        }
+
+        if (currentSlide === letterSlides.length - 1) {
+          nextBtn.textContent = "Continue ❤️";
+        } else {
+          nextBtn.textContent = "Next";
+        }
+      }, 200);
+    }
+
+    function nextLetterSlide() {
+      if (currentSlide < letterSlides.length - 1) {
+        currentSlide++;
+        renderLetterSlide();
+      } else {
+        nextStage('stage-qa');
+      }
+    }
+
+    // --- STAGE 5: ROMANTIC MINI Q&A STEPS ---
+    const qaData = [
+      { icon: '☕', q: 'Coffee Date?', b1: 'YES', b2: 'OF COURSE' },
+      { icon: '🌸', q: 'Long Walk?', b1: 'YES', b2: 'ALWAYS' },
+      { icon: '🌙', q: 'Late Night Talks?', b1: '100%', b2: 'FOREVER' }
+    ];
+    let qaIndex = 0;
+
+    function answerQA() {
+      qaIndex++;
+      if (qaIndex < qaData.length) {
+        document.getElementById('qaIcon').textContent = qaData[qaIndex].icon;
+        document.getElementById('qaQuestion').textContent = qaData[qaIndex].q;
+        document.getElementById('qaBtn1').textContent = qaData[qaIndex].b1;
+        document.getElementById('qaBtn2').textContent = qaData[qaIndex].b2;
+
+        // Update dots
+        document.getElementById('qaDot1').className = qaIndex === 0 ? 'w-5 h-1.5 rounded-full bg-pink-400' : 'w-1.5 h-1.5 rounded-full bg-white/20';
+        document.getElementById('qaDot2').className = qaIndex === 1 ? 'w-5 h-1.5 rounded-full bg-pink-400' : 'w-1.5 h-1.5 rounded-full bg-white/20';
+        document.getElementById('qaDot3').className = qaIndex === 2 ? 'w-5 h-1.5 rounded-full bg-pink-400' : 'w-1.5 h-1.5 rounded-full bg-white/20';
+      } else {
+        nextStage('stage-music');
+      }
+    }
+
+    // --- STAGE 7: PROPOSAL & RUNAWAY NO BUTTON ---
+    const noBtn = document.getElementById('noProposalBtn');
+    const runawayTexts = [
+      "Please Soch Lo ❤️",
+      "Nahi Na 🥺",
+      "Sure? 🥺",
+      "Ek Baar Aur 😭",
+      "Maan Jao Na! 🌸"
+    ];
+    let runawayIndex = 0;
+
+    function moveNoButton() {
+      // Random coordinates within card viewport
+      const x = (Math.random() - 0.5) * 160;
+      const y = (Math.random() - 0.5) * 110;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      noBtn.textContent = runawayTexts[runawayIndex % runawayTexts.length];
+      runawayIndex++;
+
+      // Make YES button slightly larger each time they try to say no
+      const yesBtn = document.getElementById('yesProposalBtn');
+      const currentScale = parseFloat(yesBtn.getAttribute('data-scale') || '1');
+      const newScale = Math.min(currentScale + 0.08, 1.35);
+      yesBtn.setAttribute('data-scale', newScale);
+      yesBtn.style.transform = `scale(${newScale})`;
+    }
+
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    function acceptProposal() {
+      nextStage('stage-celebration');
+    }
+
+    // --- STAGE 8 & 9: CELEBRATION CONFETTI & TICKING TIMER ---
+    function triggerConfettiRain() {
+      const duration = 4.5 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#ff4d79', '#ff7299', '#ffffff', '#ffd1dc']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#ff4d79', '#ff7299', '#ffffff', '#ffd1dc']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }
+
+    // Together Since Live Counter
+    let counterInterval = null;
+    let startDate = new Date(); // Starts count from moment proposal is accepted
+
+    function startTickingCounter() {
+      startDate = new Date();
+      if (counterInterval) clearInterval(counterInterval);
+
+      counterInterval = setInterval(() => {
+        const now = new Date();
+        const diffMs = now - startDate;
+
+        const seconds = Math.floor((diffMs / 1000) % 60);
+        const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
+        const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+        document.getElementById('counterDays').textContent = days;
+        document.getElementById('counterHours').textContent = hours;
+        document.getElementById('counterMinutes').textContent = minutes;
+        document.getElementById('counterSeconds').textContent = seconds;
+      }, 1000);
+    }
+
+    // --- ANIMATION LOOP & WINDOW RESIZE ---
+    window.addEventListener('resize', () => {
+      initMatrix();
+      initHearts();
+    });
+
+    window.onload = function() {
+      initMatrix();
+      initHearts();
+
+      // Matrix loop (every ~45ms)
+      setInterval(drawMatrix, 45);
+
+      // Hearts animation loop
+      function loopHearts() {
+        animateHearts();
+        requestAnimationFrame(loopHearts);
+      }
+      loopHearts();
+
+      // Launch countdown immediately
+      startCountdown();
+    };
+  </script>
+</body>
+</html>
